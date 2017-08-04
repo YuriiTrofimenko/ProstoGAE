@@ -2,8 +2,8 @@
 	<div class="row">
 		<div class="col"></div>
 		<div class="col-5">
-			<p>Копирайт</p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p id="p-title">Копирайт</p>
+			<p id="p-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 		</div>
 		<div class="col-5">
 			<form>
@@ -26,3 +26,39 @@
 		<div class="col"></div>
 	</div>
 </div>
+<script type="text/javascript">
+	/*var data = { pagedata: [
+	    {
+	        "id": 5639445604728832,
+	        "name": "name2",
+	        "descr":"serv2"
+	    },
+	    {
+	        "id": 5649391675244544,
+	        "name": "name1",
+	        "descr":"serv1"
+	    }
+	] };*/
+	$.ajax({
+		type: 'POST',
+		url: '/admin?action=get-page-data&id=5629499534213120',
+		//contentType: 'text/plain',
+		cache: false
+  	}).done(function(responseText, textStatus, jqXHR) {
+		  //if got code 200
+		  if(responseText !== ''){
+			  
+			  //
+			  console.log(responseText.content);
+			  $('section#copyright p#p-content').text(responseText.content);
+		  } else {
+			  
+		  //
+		  }
+		  //stopLoadingAnimation();
+  	}).fail(function(jqXHR, textStatus, errorThrown) {
+		  
+		//if got code 404 or 500, etc.
+		//stopLoadingAnimation();
+  	});
+</script>

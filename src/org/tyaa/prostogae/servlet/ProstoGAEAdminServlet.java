@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 import org.tyaa.prostogae.dao.*;
 import org.tyaa.prostogae.entity.PageData;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
@@ -61,7 +62,7 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	        } else if(actionString.equals("edit-page-data")) {
 	        	
 	        	String id = req.getParameter("id");
-	        	PageData pageData = mOFY.get(PageData.class, id);
+	        	PageData pageData = mOFY.get(PageData.class, Long.parseLong(id));
 	        	if(pageData != null){
 	        		
 	        		pageData.setTitle(req.getParameter("title"));
@@ -72,6 +73,40 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	        		
 	        		out.print("error");
 	        	}
+			} else if(actionString.equals("get-page-data")) {
+	        	
+				String id = null;
+	        	PageData pageData = null;
+				try{
+					
+					id = req.getParameter("id");
+		        	pageData = mOFY.get(PageData.class, Long.parseLong(id));
+		        	if(pageData != null){
+		        		
+		        		Gson gson = new Gson();
+	    			    String json = gson.toJson(pageData);
+	    			    out.print(json);
+		        	} else {
+		        		
+		        		out.print("error" + " " + id);
+		        	}
+				}catch(Exception ex){
+					
+					out.print("ex " + ex + id);
+				}
+	        	
+	        	
+	        	/*Map<Key<PageData>, PageData> map =
+        			mOFY.get(PageData.class, Key.create(PageData.class, id));
+	        	if(map != null){
+	        		
+	        		PageData pageData = map.values().iterator().next();
+	        		Gson gson = new Gson();
+    			    String json = gson.toJson(pageData);
+    			    out.print(json);*/
+	        	
+	        	
+			} else if(actionString.equals("get-pages-data")) {
 				/*//TODO validator
 	        	
 	        	//out.print(req.getParameter("name"));
@@ -83,54 +118,21 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 						, req.getParameter("email")
 						, req.getParameter("passwd"));
 				
-				mOFY.put(newCustomer);
+				mOFY.put(newCustomer);*/
 				
-				Query<Service> query = mOFY.query(Service.class);
+				Query<PageData> query = mOFY.query(PageData.class);
     			//query.filter("name", "name1");
-    			List<Service> results = (List<Service>) query.list();
+    			List<PageData> results = (List<PageData>) query.list();
     			
-    			
-    			
-    			if(!results.isEmpty()){
+    			if(results != null && !results.isEmpty()){
     				
     				Gson gson = new Gson();
     			    String json = gson.toJson(results);
     			    out.print(json.toString());
-    			}
-	        	
-				Gson gson = new Gson();
-			    String json = gson.toJson(newCustomer);
-			    out.print(json.toString());*/
-			} else if(actionString.equals("signup")) {
-				/*//TODO validator
-	        	
-	        	//out.print(req.getParameter("name"));
-	        	
-				Customer newCustomer =
-					new Customer(
-						req.getParameter("name")
-						, req.getParameter("phone")
-						, req.getParameter("email")
-						, req.getParameter("passwd"));
-				
-				mOFY.put(newCustomer);
-				
-				Query<Service> query = mOFY.query(Service.class);
-    			//query.filter("name", "name1");
-    			List<Service> results = (List<Service>) query.list();
-    			
-    			
-    			
-    			if(!results.isEmpty()){
-    				
-    				Gson gson = new Gson();
-    			    String json = gson.toJson(results);
-    			    out.print(json.toString());
-    			}
-	        	
-				Gson gson = new Gson();
-			    String json = gson.toJson(newCustomer);
-			    out.print(json.toString());*/
+    			} else {
+	        		
+	        		out.print("error");
+	        	}
 			} else if(actionString.equals("signin")) {
 				/*//TODO validator
 	        	
@@ -169,6 +171,7 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+		//super.doPost(req, resp);
+		doGet(req, resp);
 	}
 }
