@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>ProstoGAE</servlet-name>
-		<servlet-class>org.tyaa.prostogae.ProstoGAEServlet</servlet-class>
+		<servlet-class>org.tyaa.prostogae.servlet.ProstoGAEServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ProstoGAE</servlet-name>

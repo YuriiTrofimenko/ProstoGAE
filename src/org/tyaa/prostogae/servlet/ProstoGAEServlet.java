@@ -1,4 +1,4 @@
-package org.tyaa.prostogae;
+package org.tyaa.prostogae.servlet;
 
 import java.io.IOException;
 import javax.servlet.http.*;
