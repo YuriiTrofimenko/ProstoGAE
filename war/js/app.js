@@ -5,7 +5,10 @@
   var currentPage;
   
   // show the "page" with optional parameter
-  function show(pageName,param) { 
+  function show(pageName,param) {
+
+    $(".loader").css("display", "block");
+    //console.log($(".loader"));
     // invoke page handler
     var ph = pageHandlers[pageName]; 
     if( ph ) { 
@@ -17,8 +20,8 @@
     $(".navig a[href='#"+pageName+"']").addClass("active");
     
     $(document.body).attr("page",pageName)
-                    .find("section").removeClass("active")
-                    .filter("section#" + pageName).addClass("active");
+                    .find("section").fadeOut(600).removeClass("active")
+                    .filter("section#" + pageName).fadeIn(600).addClass("active");
   }  
 
   function app(pageName,param) {

@@ -1,24 +1,24 @@
 <div class="container over-main">
 	<div class="row">
 		<div class="col"></div>
-		<div class="col-5">
-			<p id="p-title">Копирайт</p>
-			<p id="p-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<div class="col-5" id="page-container">
+			<!-- <p id="p-title">Копирайт</p>
+			<p id="p-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 		</div>
 		<div class="col-5">
 			<form>
 				<div class="form-group">
-					<label for="copyrighte-task">Что нужно сделать?</label>
-					<textarea class="form-control" id="copyrighte-task" rows="3"></textarea>
+					<label for="copyright-task">Что нужно сделать?</label>
+					<textarea class="form-control" id="copyright-task" rows="3"></textarea>
 				</div>
 				<div class="form-group">
-				    <label for="copyrighte-files">Прикрепите файлы</label>
-				    <input type="file" class="form-control-file" id="copyrighte-files" aria-describedby="fileHelp" multiple="true">
+				    <label for="copyright-files">Прикрепите файлы</label>
+				    <input type="file" class="form-control-file" id="copyright-files" aria-describedby="fileHelp" multiple="true">
 				    <small id="fileHelp" class="form-text text-muted">Выберите файлы, необходимые для выполнения задания</small>
 			  	</div>
 			  	<div class="form-group">
-					<label for="copyrighte-date">Желаемый срок выполнения - до</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyrighte-date">
+					<label for="copyright-date">Желаемый срок выполнения - до</label>
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-date">
 				</div>
 				<button type="submit">Заказать</button>
 			</form>
@@ -27,38 +27,44 @@
 	</div>
 </div>
 <script type="text/javascript">
-	/*var data = { pagedata: [
-	    {
-	        "id": 5639445604728832,
-	        "name": "name2",
-	        "descr":"serv2"
-	    },
-	    {
-	        "id": 5649391675244544,
-	        "name": "name1",
-	        "descr":"serv1"
-	    }
-	] };*/
-	$.ajax({
-		type: 'POST',
-		url: '/admin?action=get-page-data&id=5629499534213120',
-		//contentType: 'text/plain',
-		cache: false
-  	}).done(function(responseText, textStatus, jqXHR) {
-		  //if got code 200
-		  if(responseText !== ''){
-			  
-			  //
-			  console.log(responseText.content);
-			  $('section#copyright p#p-content').text(responseText.content);
-		  } else {
-			  
-		  //
-		  }
-		  //stopLoadingAnimation();
-  	}).fail(function(jqXHR, textStatus, errorThrown) {
-		  
-		//if got code 404 or 500, etc.
-		//stopLoadingAnimation();
+	app.handler(function() {
+
+		console.log('this ' + $(this));
+		var $container = $(this).find("#page-container");
+		console.log('container ' + $container);
+
+		return function(params) {
+
+			$.ajax({
+				type: 'POST',
+				url: '/prostogae?action=get-data-by-section&section=copyright',
+				//contentType: 'text/plain',
+				cache: false
+		  	}).done(function(responseText, textStatus, jqXHR) {
+				  //if got code 200
+				  if(responseText !== '' && responseText !== 'error'){
+					  
+						//
+						console.log(responseText.content);
+						//$('section#copyright p#p-content').text(responseText.content);
+
+					  	var template = Hogan.compile("<p>{{title}}</p><p>{{content}}</p>");
+						//var output = template.render(responseText);
+						//var $container = $(this).find("section#copyright #page-container");
+					  	$container.html( template.render(responseText) );
+
+				  } else {
+					  
+				  //
+				  }
+				  //stopLoadingAnimation();
+				  $(".loader").css("display", "none");
+		  	}).fail(function(jqXHR, textStatus, errorThrown) {
+				  
+				//if got code 404 or 500, etc.
+				//stopLoadingAnimation();
+				$(".loader").css("display", "none");
+		  	});
+	  	};
   	});
 </script>

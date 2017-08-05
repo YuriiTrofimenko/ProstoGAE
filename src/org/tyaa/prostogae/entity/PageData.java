@@ -6,13 +6,22 @@ public class PageData {
 	
 	@Id
 	private Long id;
+	//название раздела сайта, его "ключ"
+	private String section;
+	//заголовок раздела для отображения
 	private String title;
+	//содержимое описания раздела
 	private String content;
 	
 	public PageData() { }
 	
-	public PageData(String _title, String _content) {
+	public PageData(
+			String _section
+			, String _title
+			, String _content
+		) {
 		
+		section = _section;
 		title = _title;
 		content = _content;
 	}
@@ -36,5 +45,13 @@ public class PageData {
 	public Long getId() {
 		
 		return id;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
 	}
 }

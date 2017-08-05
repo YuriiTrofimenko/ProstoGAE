@@ -5,12 +5,13 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.tyaa.prostogae.dao.*;
+import org.tyaa.prostogae.dao.DAO;
 import org.tyaa.prostogae.entity.PageData;
 
-import com.google.appengine.api.datastore.Key;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
@@ -45,7 +46,8 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	        	//TODO
 	        	PageData pageData =
 	    			new PageData(
-						req.getParameter("title")
+    					req.getParameter("section")
+						, req.getParameter("title")
 						, req.getParameter("content")
 					);
 	        	//Key<Service> v = mOFY.put(service);
