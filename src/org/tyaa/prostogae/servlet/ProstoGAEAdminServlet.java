@@ -71,10 +71,14 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	        		pageData.setTitle(req.getParameter("title"));
 	        		pageData.setContent(req.getParameter("content"));
 	        		mOFY.put(pageData);
-		        	out.print("ok");
+	        		Gson gson = new Gson();
+    			    String json = gson.toJson("ok");
+		        	out.print(json);
 	        	} else {
 	        		
-	        		out.print("error");
+	        		Gson gson = new Gson();
+    			    String json = gson.toJson("error");
+	        		out.print(json);
 	        	}
 			} else if(actionString.equals("get-page-data")) {
 	        	
@@ -109,6 +113,26 @@ public class ProstoGAEAdminServlet extends HttpServlet {
     			    out.print(json);*/
 	        	
 	        	
+			} else if(actionString.equals("get-pages-data-lazy")) {
+				/*//TODO validator*/
+				
+				Query<PageData> query = mOFY.query(PageData.class);
+    			List<PageData> results = (List<PageData>) query.list();
+    			
+    			if(results != null && !results.isEmpty()){
+    				
+    				for(int i = 0; i < results.size(); i++){
+    					
+    					results.get(i).setSection("");
+    					results.get(i).setContent("");
+    				}
+    				Gson gson = new Gson();
+    			    String json = gson.toJson(new PagesData(results));
+    			    out.print(json.toString());
+    			} else {
+	        		
+	        		out.print("error");
+	        	}
 			} else if(actionString.equals("get-pages-data")) {
 				/*//TODO validator
 	        	

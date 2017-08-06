@@ -20,8 +20,8 @@
     $(".navig a[href='#"+pageName+"']").addClass("active");
     
     $(document.body).attr("page",pageName)
-                    .find("section").fadeOut(600).removeClass("active")
-                    .filter("section#" + pageName).fadeIn(600).addClass("active");
+                    .find("section").fadeOut(1000).removeClass("active")
+                    .filter("section#" + pageName).addClass("active").fadeIn(600);
   }  
 
   function app(pageName,param) {

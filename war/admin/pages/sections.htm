@@ -27,7 +27,7 @@
 			function populateTable() {
 				$.ajax({
 					type: 'POST',
-					url: '/admin?action=get-pages-data',
+					url: '/admin?action=get-pages-data-lazy',
 					//contentType: 'text/plain',
 					cache: false
 			  	}).done(function(responseText, textStatus, jqXHR) {
@@ -74,16 +74,16 @@
 									  if(responseText !== '' && responseText !== 'error'){
 										  
 											//
-											console.log(responseText.title);
+											//console.log(responseText.title);
 
-										  	$('#section-id').text(responseText.id);
+										  	$('#section-id').val(responseText.id);
 										  	$('#section-title').val(responseText.title);
-										  	$('#section-content').text(responseText.content);
+										  	$('#section-content').val(responseText.content);
 
 										  	$('form').fadeIn(600);
 									  } else {
 										  
-									  //
+									  	alert("Произошла ошибка. Обратитесь к разработчику сайта");
 									  }
 									  //stopLoadingAnimation();
 									  $(".loader").css("display", "none");
@@ -92,15 +92,8 @@
 									//if got code 404 or 500, etc.
 									//stopLoadingAnimation();
 									$(".loader").css("display", "none");
+									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 							  	});
-
-								//var clickedSectionId = $(event.target).text();
-								//var clickedSectionTitle = $(event.target).text();
-								//var clickedSectionId = $(event.target).text();
-								//
-								// $('form input#section-id').val(clickedSectionId);
-								// $('form input#section-id').val(clickedSectionId);
-								// $('form input#section-id').val(clickedSectionId);
 							});
 						  	//
 						  	$('form button').click(function(event){
@@ -108,11 +101,43 @@
 								//
 								event.preventDefault();
 								//
-								$('form').fadeOut(600);
+								$.ajax({
+									type: 'POST',
+									url: '/admin?action=edit-page-data&id='
+									+ $('#section-id').val()
+									+ '&title='
+									+ encodeURIComponent($('#section-title').val())
+									+ '&content='
+									+ encodeURIComponent($('#section-content').val()),
+									//contentType: 'text/plain',
+									cache: false
+							  	}).done(function(responseText, textStatus, jqXHR) {
+									  //if got code 200
+									  if(responseText !== '' && responseText !== 'error'){
+										  
+											//
+											console.log(responseText);
+											$('form').fadeOut(600);
+											//
+		  									populateTable();
+									  } else {
+										  
+										  //
+										  alert("Произошла ошибка. Обратитесь к разработчику сайта");
+									  }
+									  //stopLoadingAnimation();
+									  $(".loader").css("display", "none");
+							  	}).fail(function(jqXHR, textStatus, errorThrown) {
+									  
+									//if got code 404 or 500, etc.
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
+							  	});
 							});
 					  } else {
 						  
-					  //
+					  	alert("Произошла ошибка. Обратитесь к разработчику сайта");
 					  }
 					  //stopLoadingAnimation();
 					  $(".loader").css("display", "none");
@@ -121,6 +146,7 @@
 					//if got code 404 or 500, etc.
 					//stopLoadingAnimation();
 					$(".loader").css("display", "none");
+					// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 			  	});
 		  	}
 		  	//
