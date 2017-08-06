@@ -1,0 +1,73 @@
+body{background: rgba(0, 0, 0, 0) url(../images/desk.png) no-repeat fixed center center / cover;}
+
+.loader {
+   display: none;
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   z-index: 1;
+   width: 150px;
+   height: 150px;
+   margin: -75px 0 0 -75px;
+   border: 16px solid #f3f3f3;
+   border-radius: 50%;
+   border-top: 16px solid #999999;
+   width: 120px;
+   height: 120px;
+   -webkit-animation: spin 2s linear infinite;
+   animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* section visibility */
+/*section:not(.active) { display:none; }*/
+
+.header-row{padding-top: 15px; padding-bottom: 25px;}
+.paper-img{width: 150px;}
+/*.over-main {position:absolute; top:0; left:0; z-index:3;color: black;}*/
+/*.over-main > .row > .col-6 {margin-left: 5em}*/
+section{margin-top: 1.5em;}
+.over {position:absolute; bottom:40%; right:0; left:0; z-index:3;color: white;text-shadow: 2px 2px 10px #000000;}
+
+.main-content{height: 510px;background: rgba(0, 0, 0, 0) url(../images/book.png) no-repeat center center / cover;}
+/*button[type=submit]{background-color: lightgray;border-color: gray; }
+button[type=submit]:hover{color: white !important;text-shadow: 2px 2px 10px #000000 !important;background-color: white;border-color: white;}*/
+
+button[type=submit] {
+   border-top: 1px solid #ccd4d9;
+   background: #d4d4d4;
+   background: -webkit-gradient(linear, left top, left bottom, from(#a1a1a1), to(#d4d4d4));
+   background: -webkit-linear-gradient(top, #a1a1a1, #d4d4d4);
+   background: -moz-linear-gradient(top, #a1a1a1, #d4d4d4);
+   background: -ms-linear-gradient(top, #a1a1a1, #d4d4d4);
+   background: -o-linear-gradient(top, #a1a1a1, #d4d4d4);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+}
+button[type=submit]:hover {
+   border-top-color: #ededed;
+   background: #ededed;
+   color: #ccc;
+}
+button[type=submit]:active {
+   border-top-color: #ffffff;
+   background: #ffffff;
+}
+/*input[type=file]{margin-top:-50px; margin-left:-410px; -moz-opacity:0; filter:alpha(opacity=0); opacity:0; font-size:150px; height:100px;}*/
+/*.main-content > img{visibility: hidden;}*/
+

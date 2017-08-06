@@ -1,0 +1,48 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12" id="page-container">
+			Разделы
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	app.handler(function() {
+
+		/*console.log('this ' + $(this));
+		var $container = $(this).find("#page-container");
+		console.log('container ' + $container);*/
+
+		return function(params) {
+
+			/*$.ajax({
+				type: 'POST',
+				url: '/prostogae?action=get-data-by-section&section=home',
+				//contentType: 'text/plain',
+				cache: false
+		  	}).done(function(responseText, textStatus, jqXHR) {
+				  //if got code 200
+				  if(responseText !== '' && responseText !== 'error'){
+					  
+						//
+						console.log(responseText.content);
+						//$('section#copyright p#p-content').text(responseText.content);
+
+					  	var template = Hogan.compile("<p>{{content}}</p>");
+						//var output = template.render(responseText);
+						//var $container = $(this).find("section#copyright #page-container");
+					  	$container.html(template.render(responseText));
+				  } else {
+					  
+				  //
+				  }
+				  //stopLoadingAnimation();
+				  $(".loader").css("display", "none");
+		  	}).fail(function(jqXHR, textStatus, errorThrown) {
+				  
+				//if got code 404 or 500, etc.
+				//stopLoadingAnimation();
+				$(".loader").css("display", "none");
+		  	});*/
+	  	};
+  	});
+</script>
