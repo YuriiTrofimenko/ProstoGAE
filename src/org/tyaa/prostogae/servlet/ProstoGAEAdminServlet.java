@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.tyaa.prostogae.dao.DAO;
 import org.tyaa.prostogae.entity.PageData;
+import org.tyaa.prostogae.entity.PagesData;
 
 import com.google.gson.Gson;
 import com.googlecode.objectify.Objectify;
@@ -90,11 +91,11 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	    			    out.print(json);
 		        	} else {
 		        		
-		        		out.print("error" + " " + id);
+		        		out.print("error");
 		        	}
 				}catch(Exception ex){
 					
-					out.print("ex " + ex + id);
+					out.print("error");
 				}
 	        	
 	        	
@@ -129,7 +130,7 @@ public class ProstoGAEAdminServlet extends HttpServlet {
     			if(results != null && !results.isEmpty()){
     				
     				Gson gson = new Gson();
-    			    String json = gson.toJson(results);
+    			    String json = gson.toJson(new PagesData(results));
     			    out.print(json.toString());
     			} else {
 	        		

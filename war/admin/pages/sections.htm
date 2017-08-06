@@ -1,48 +1,130 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-12" id="page-container">
-			Разделы
+		<div class="col-6" id="page-container"></div>
+		<div class="col-6">
+			<form id="form">
+				<div class="form-group">
+				  	<label for="section-title">Заголовок</label>
+			    	<input class="form-control" type="text" id="section-title">
+				</div>
+				<div class="form-group">
+					<label for="section-content">Описание услуги</label>
+					<textarea class="form-control" id="section-content" rows="5"></textarea>
+				</div>
+				<input type="hidden" value="" id="section-id">
+				<button type="submit">Сохранить</button>
+			</form>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
 	app.handler(function() {
 
-		/*console.log('this ' + $(this));
 		var $container = $(this).find("#page-container");
-		console.log('container ' + $container);*/
 
 		return function(params) {
 
-			/*$.ajax({
-				type: 'POST',
-				url: '/prostogae?action=get-data-by-section&section=home',
-				//contentType: 'text/plain',
-				cache: false
-		  	}).done(function(responseText, textStatus, jqXHR) {
-				  //if got code 200
-				  if(responseText !== '' && responseText !== 'error'){
-					  
-						//
-						console.log(responseText.content);
-						//$('section#copyright p#p-content').text(responseText.content);
+			function populateTable() {
+				$.ajax({
+					type: 'POST',
+					url: '/admin?action=get-pages-data',
+					//contentType: 'text/plain',
+					cache: false
+			  	}).done(function(responseText, textStatus, jqXHR) {
+					  //if got code 200
+					  if(responseText !== '' && responseText !== 'error'){
+						  
+							//
+							console.log(responseText.title);
 
-					  	var template = Hogan.compile("<p>{{content}}</p>");
-						//var output = template.render(responseText);
-						//var $container = $(this).find("section#copyright #page-container");
-					  	$container.html(template.render(responseText));
-				  } else {
+						  	var template = Hogan.compile(
+						  		'<table class="table">'
+								+  '<thead>'
+								+    '<tr>'
+								+      '<th>ID</th>'
+								+      '<th>Раздел</th>'
+								+    '</tr>'
+								+  '</thead>'
+								+  '<tbody>'
+					  			+ 		'{{#pagesData}}'
+			  					+ 			'<tr>'
+								+   			'<th scope="row">{{id}}</th>'
+								+   			'<td>{{title}}</td>'
+								+ 			'</tr>'
+					      		+ 		'{{/pagesData}}'
+					      		+	'</tbody>'
+								+'</table>'
+						  		);
+							//
+						  	$container.html(template.render(responseText));
+
+						  	//
+						  	$('tbody th').click(function(event){
+							
+								//
+								event.preventDefault();
+								//
+								$.ajax({
+									type: 'POST',
+									url: '/admin?action=get-page-data&id=' + $(event.target).text(),
+									//contentType: 'text/plain',
+									cache: false
+							  	}).done(function(responseText, textStatus, jqXHR) {
+									  //if got code 200
+									  if(responseText !== '' && responseText !== 'error'){
+										  
+											//
+											console.log(responseText.title);
+
+										  	$('#section-id').text(responseText.id);
+										  	$('#section-title').val(responseText.title);
+										  	$('#section-content').text(responseText.content);
+
+										  	$('form').fadeIn(600);
+									  } else {
+										  
+									  //
+									  }
+									  //stopLoadingAnimation();
+									  $(".loader").css("display", "none");
+							  	}).fail(function(jqXHR, textStatus, errorThrown) {
+									  
+									//if got code 404 or 500, etc.
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+							  	});
+
+								//var clickedSectionId = $(event.target).text();
+								//var clickedSectionTitle = $(event.target).text();
+								//var clickedSectionId = $(event.target).text();
+								//
+								// $('form input#section-id').val(clickedSectionId);
+								// $('form input#section-id').val(clickedSectionId);
+								// $('form input#section-id').val(clickedSectionId);
+							});
+						  	//
+						  	$('form button').click(function(event){
+							
+								//
+								event.preventDefault();
+								//
+								$('form').fadeOut(600);
+							});
+					  } else {
+						  
+					  //
+					  }
+					  //stopLoadingAnimation();
+					  $(".loader").css("display", "none");
+			  	}).fail(function(jqXHR, textStatus, errorThrown) {
 					  
-				  //
-				  }
-				  //stopLoadingAnimation();
-				  $(".loader").css("display", "none");
-		  	}).fail(function(jqXHR, textStatus, errorThrown) {
-				  
-				//if got code 404 or 500, etc.
-				//stopLoadingAnimation();
-				$(".loader").css("display", "none");
-		  	});*/
+					//if got code 404 or 500, etc.
+					//stopLoadingAnimation();
+					$(".loader").css("display", "none");
+			  	});
+		  	}
+		  	//
+		  	populateTable();
 	  	};
   	});
 </script>
