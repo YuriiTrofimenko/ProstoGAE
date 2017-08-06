@@ -167,6 +167,9 @@ public class ProstoGAEAdminServlet extends HttpServlet {
     					: gson.toJson(new Customer());
 			    out.print(json);*/
 			}
+		} else if(req.getParameterMap().isEmpty()){
+			
+			resp.sendRedirect("/admin/index.html");
 		}
 	}
 
