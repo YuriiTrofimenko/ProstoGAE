@@ -9,16 +9,16 @@
 			<form method="POST" enctype="multipart/form-data" id="sendOrderForm">
 				<div class="form-group">
 					<label for="copyright-task">Что нужно сделать?</label>
-					<textarea class="form-control" id="copyright-task" rows="3"></textarea>
+					<textarea class="form-control" id="copyright-task" name="copyright-task" rows="3"></textarea>
 				</div>
 				<div class="form-group">
 				    <label for="copyright-files">Прикрепите файлы</label>
-				    <input type="file" class="form-control-file" id="copyright-files" aria-describedby="fileHelp" multiple="true">
+				    <input type="file" class="form-control-file" id="copyright-files" name="copyright-files" aria-describedby="fileHelp" multiple="true">
 				    <small id="fileHelp" class="form-text text-muted">Выберите файлы, необходимые для выполнения задания</small>
 			  	</div>
 			  	<div class="form-group">
 					<label for="copyright-date">Желаемый срок выполнения - до</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyright-date">
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-date" name="copyright-date">
 				</div>
 				<button type="submit">Заказать</button>
 			</form>
@@ -103,7 +103,17 @@
 								$("#sendOrderForm button[type=submit]").prop("disabled", false);
 								// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 						  	});
+					  	}
 
+					  	/* Назначаем вызов функции отправки заказа
+					  	в теле обработчика клика по кнопке отправки формы */
+					  	$('form button').click(function(event){
+						
+							//Предотвращаем стандартные действия при данном событии
+							event.preventDefault();
+							//Выполняем собтвенные действия
+							sendOrderForm();
+						});
 				  } else {
 					  
 				  //
