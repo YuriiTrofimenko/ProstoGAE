@@ -6,7 +6,7 @@
 			<p id="p-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 		</div>
 		<div class="col-5">
-			<form>
+			<form method="POST" enctype="multipart/form-data" id="sendOrderForm">
 				<div class="form-group">
 					<label for="copyright-task">Что нужно сделать?</label>
 					<textarea class="form-control" id="copyright-task" rows="3"></textarea>
@@ -52,6 +52,57 @@
 						//var output = template.render(responseText);
 						//var $container = $(this).find("section#copyright #page-container");
 					  	$container.html( template.render(responseText) );
+
+					  	/* Когда страница прорисована - 
+					  	создаем функцию отправки заказа */
+					  	function sendOrderForm() {
+
+					  		// Get form
+					  		var orderForm = $('#sendOrderForm')[0];
+
+					  		// Create an FormData object
+        					var data = new FormData(orderForm);
+
+        					// If you want to add an extra field for the FormData
+        					//data.append("CustomField", "This is some extra data, testing");
+
+        					// disabled the submit button
+        					$("#sendOrderForm button[type=submit]").prop("disabled", true);
+
+							$.ajax({
+								type: 'POST',
+								enctype: 'multipart/form-data',
+								url: '/prostogae?action=send-order',
+								data: data,
+					            processData: false,
+					            contentType: false,
+					            timeout: 600000,
+								cache: false
+						  	}).done(function(responseText, textStatus, jqXHR) {
+								//if got code 200
+								if(responseText !== '' && responseText !== 'error'){
+								  
+									//
+									console.log(responseText);
+
+								  	alert("Заказ успешно отправлен");
+								} else {
+								  
+									alert("Произошла ошибка. Обратитесь к разработчику сайта");
+								}
+								//stopLoadingAnimation();
+								$(".loader").css("display", "none");
+								// enabled the submit button
+								$("#sendOrderForm button[type=submit]").prop("disabled", false);
+						  	}).fail(function(jqXHR, textStatus, errorThrown) {
+								  
+								//if got code 404 or 500, etc.
+								//stopLoadingAnimation();
+								$(".loader").css("display", "none");
+								// enabled the submit button
+								$("#sendOrderForm button[type=submit]").prop("disabled", false);
+								// alert("Произошла ошибка. Обратитесь к разработчику сайта");
+						  	});
 
 				  } else {
 					  
