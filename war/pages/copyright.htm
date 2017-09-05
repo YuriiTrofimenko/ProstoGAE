@@ -29,9 +29,9 @@
 <script type="text/javascript">
 	app.handler(function() {
 
-		console.log('this ' + $(this));
+		//console.log('this ' + $(this));
 		var $container = $(this).find("#page-container");
-		console.log('container ' + $container);
+		//console.log('container ' + $container);
 
 		return function(params) {
 
@@ -56,12 +56,12 @@
 					  	/* Когда страница прорисована - 
 					  	создаем функцию отправки заказа */
 					  	function sendOrderForm() {
-
+					  		
 					  		// Get form
 					  		var orderForm = $('#sendOrderForm')[0];
 
 					  		// Create an FormData object
-        					var data = new FormData(orderForm);
+	    					var data = new FormData(orderForm);
 
         					// If you want to add an extra field for the FormData
         					//data.append("CustomField", "This is some extra data, testing");
@@ -108,11 +108,23 @@
 					  	/* Назначаем вызов функции отправки заказа
 					  	в теле обработчика клика по кнопке отправки формы */
 					  	$('form button').click(function(event){
+					  		
+					  		console.log($('#copyright-task').val());
+					  		console.log(encodeURIComponent($('#copyright-task').val()));
+
+					  		//data.set('copyright-task', encodeURIComponent($('#copyright-task').val()));
+					  		
+					  		var encodedCopyrightTaskVal = encodeURIComponent($('#copyright-task').val());
+					  		var decodedCopyrightTaskVal = $('#copyright-task').val();
+					  		
+					  		$('#copyright-task').val(encodedCopyrightTaskVal);
 						
 							//Предотвращаем стандартные действия при данном событии
 							event.preventDefault();
 							//Выполняем собтвенные действия
 							sendOrderForm();
+							
+							$('#copyright-task').val(decodedCopyrightTaskVal);
 						});
 				  } else {
 					  

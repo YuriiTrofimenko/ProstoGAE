@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ProstoGAEServlet extends HttpServlet {
 		mOFY = mDAO.ofy();
 	}
 	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("utf-8");
@@ -60,7 +61,7 @@ public class ProstoGAEServlet extends HttpServlet {
 			
 			String actionString = req.getParameter("action");
 	        if(actionString.equals("send-order")){
-	        	
+	        		        	
 	        	try {
 
     				//проверяем является ли полученный запрос multipart/form-data
@@ -105,7 +106,7 @@ public class ProstoGAEServlet extends HttpServlet {
 						    	//если принимаемая часть данных является полем формы			    	
 						    	if(item.getFieldName().equals("copyright-task")){
 						    		
-						    		copyrightTask = item.getString();
+						    		copyrightTask = URLDecoder.decode(item.getString(), "UTF-8");
 						    	} else if(item.getFieldName().equals("copyright-date")){
 						    		
 						    		copyrightDate = item.getString();
@@ -116,8 +117,12 @@ public class ProstoGAEServlet extends HttpServlet {
 						    }
 						}
 						
-						/*  */
+						//
 						Multipart mp = new MimeMultipart();
+						
+						MimeBodyPart textPart = new MimeBodyPart();
+						textPart.setText(copyrightTask + " Выполнить до: " + copyrightDate);
+						mp.addBodyPart(textPart);
 						
 						for(FileItem item : attachments){
 							
@@ -129,7 +134,7 @@ public class ProstoGAEServlet extends HttpServlet {
 							mp.addBodyPart(attachment);
 						}
 
-						/* Отправляем сообщение */
+						// Отправляем сообщение
 						Properties props = new Properties();
 						props.setProperty("mail.mime.charset", "UTF-8");
 						Session session = Session.getDefaultInstance(props, null);
@@ -139,7 +144,7 @@ public class ProstoGAEServlet extends HttpServlet {
 						msg.addRecipient(Message.RecipientType.TO,
 						               new InternetAddress("karakal2586@gmail.com", "Admin"));
 						msg.setSubject("New order");
-						msg.setText(copyrightTask + " Выполнить до: " + copyrightDate);
+						//msg.setText(copyrightTask + " Выполнить до: " + copyrightDate);
 						msg.setContent(mp);
 						Transport.send(msg);
 
@@ -148,61 +153,29 @@ public class ProstoGAEServlet extends HttpServlet {
 
 						//TODO Send a simple email
 					}
-					out.print("ok");
+					//out.print("ok");
+					Gson gson = new Gson();
+    			    String json = gson.toJson("ok");
+	        		out.print(json);
 	        	} catch(Exception ex) {
-
-	        		out.print("error");
+	        		
+	        		/*String errorString = "";
+	        		
+	        		StackTraceElement[] elements = ex.getStackTrace();  
+	                for (int iterator=1; iterator<=elements.length; iterator++)  
+	                	errorString += "Class Name:"+elements[iterator-1].getClassName()+" Method Name:"+elements[iterator-1].getMethodName()+" Line Number:"+elements[iterator-1].getLineNumber();
+*/
+	        		Gson gson = new Gson();
+    			    //String json = gson.toJson(errorString);
+	        		String json = gson.toJson(ex.getLocalizedMessage());
+	        		out.print(json);
 	        	}
-	        }/* else if(actionString.equals("888")) {
 	        	
-	        	String id = req.getParameter("id");
-	        	PageData pageData = mOFY.get(PageData.class, Long.parseLong(id));
-	        	if(pageData != null){
-	        		
-	        		pageData.setTitle(req.getParameter("title"));
-	        		pageData.setContent(req.getParameter("content"));
-	        		mOFY.put(pageData);
-		        	out.print("ok");
-	        	} else {
-	        		
-	        		out.print("error");
-	        	}
-			} else if(actionString.equals("111")) {
+	        	/*Gson gson = new Gson();
+			    String json = gson.toJson("send - ok");
+        		out.print(json);*/
 	        	
-				String id = null;
-	        	PageData pageData = null;
-				try{
-					
-					id = req.getParameter("id");
-		        	pageData = mOFY.get(PageData.class, Long.parseLong(id));
-		        	if(pageData != null){
-		        		
-		        		Gson gson = new Gson();
-	    			    String json = gson.toJson(pageData);
-	    			    out.print(json);
-		        	} else {
-		        		
-		        		out.print("error" + " " + id);
-		        	}
-				}catch(Exception ex){
-					
-					out.print("ex " + ex + id);
-				}
-			} else if(actionString.equals("777")) {
-				
-				Query<PageData> query = mOFY.query(PageData.class);
-    			List<PageData> results = (List<PageData>) query.list();
-    			
-    			if(results != null && !results.isEmpty()){
-    				
-    				Gson gson = new Gson();
-    			    String json = gson.toJson(results);
-    			    out.print(json.toString());
-    			} else {
-	        		
-	        		out.print("error");
-	        	}
-			}*/ else if(actionString.equals("get-data-by-section")) {
+	        } else if(actionString.equals("get-data-by-section")) {
 				
 				//TODO validator
 				String section = req.getParameter("section");
@@ -219,15 +192,33 @@ public class ProstoGAEServlet extends HttpServlet {
     			    out.print(json);
     			} else {
 	        		
-	        		out.print("error");
+    				Gson gson = new Gson();
+    			    String json = gson.toJson("error");
+	        		out.print(json);
 	        	}
+			} else {
+
+				Gson gson = new Gson();
+			    String json = gson.toJson("Incorrect URL - params are not exist");
+			    out.print(json);
 			}
+		} else {
+
+			Gson gson = new Gson();
+		    String json = gson.toJson("Incorrect URL - action is not exists");
+		    out.print(json);
 		}
+	}
+	
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		doRequest(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//
-		doGet(req, resp);
+		doRequest(req, resp);
 	}
 }
