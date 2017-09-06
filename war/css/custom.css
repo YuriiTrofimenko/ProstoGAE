@@ -71,3 +71,8 @@ button[type=submit]:active {
 /*input[type=file]{margin-top:-50px; margin-left:-410px; -moz-opacity:0; filter:alpha(opacity=0); opacity:0; font-size:150px; height:100px;}*/
 /*.main-content > img{visibility: hidden;}*/
 
+/* Google auth */
+
+.g-signin2 {
+	
+}

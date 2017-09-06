@@ -8,6 +8,7 @@
   <title>Prosto</title>
   <meta name="description" content="рерайт копирайт перевод корректура фото web+">
   <meta name="author" content="Yurii Trofimenko">
+  <meta name="google-signin-client_id" content="521479389119-mvan0ls1hg2vs46u7ujdidbgmqsbckr8.apps.googleusercontent.com">
 
   <link rel="stylesheet" href="css/styles.css?v=1.0">
 
@@ -17,7 +18,8 @@
 </head>
 
 <body>
-	<div class="loader"></div> 
+	<div class="loader"></div>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
 	<div class="container">
 	  <div class="row align-items-center justify-content-center">
 	    <div class="col"></div>
@@ -122,6 +124,7 @@
 	    </div>
 	  </div>
 	</div>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
 	<script src="js/jquery/jquery-3.2.1.min.js"></script>
 	<script src="js/scripts.js"></script>
 </body>
