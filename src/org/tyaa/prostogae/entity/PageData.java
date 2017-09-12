@@ -6,11 +6,11 @@ public class PageData {
 	
 	@Id
 	private Long id;
-	//название раздела сайта, его "ключ"
+	//СЃРёСЃС‚РµРјРЅРѕРµ РЅР°Р·РІР°РЅРёРµ СЃРµРєС†РёРё
 	private String section;
-	//заголовок раздела для отображения
+	//Р·Р°РіРѕР»РѕРІРѕРє СЃРµРєС†РёРё
 	private String title;
-	//содержимое описания раздела
+	//РѕРїРёСЃР°РЅРёРµ СЃРµРєС†РёРё
 	private String content;
 	
 	public PageData() { }
