@@ -95,6 +95,8 @@ public class ProstoGAEServlet extends HttpServlet {
 
 						String copyrightTask = null;
 						String copyrightDate = null;
+						String copyrightName = null;
+						String copyrightEmail = null;
 						List<FileItem> attachments = new ArrayList();
 						
 						//Перебираем список объектов с полученными данными
@@ -110,6 +112,12 @@ public class ProstoGAEServlet extends HttpServlet {
 						    	} else if(item.getFieldName().equals("copyright-date")){
 						    		
 						    		copyrightDate = item.getString();
+						    	} else if(item.getFieldName().equals("copyright-name")){
+						    		
+						    		copyrightName = item.getString();
+						    	} else if(item.getFieldName().equals("copyright-email")){
+						    		
+						    		copyrightEmail = item.getString();
 						    	}
 						    } else {
 						    	//в противном случае рассматриваем как файл
@@ -121,7 +129,31 @@ public class ProstoGAEServlet extends HttpServlet {
 						Multipart mp = new MimeMultipart();
 						
 						MimeBodyPart textPart = new MimeBodyPart();
-						textPart.setText(copyrightTask + " Выполнить до: " + copyrightDate);
+						textPart.setText(
+								copyrightTask
+								+ " Выполнить до: "
+								+ copyrightDate
+								+ " ( "
+								+ ((copyrightName != null) ? copyrightName : "NoName")
+								+ " , "
+								+ ((copyrightEmail != null) ? copyrightEmail : "NoEmail")
+								+ " )."
+							);
+						
+						/*MimeBodyPart textPart = new MimeBodyPart();
+						textPart.setText(
+								copyrightTask
+								+ " Выполнить до: "
+								+ copyrightDate
+							);
+						textPart = new MimeBodyPart();
+						textPart.setText(
+								" ( "
+								+ ((copyrightName != null) ? copyrightName : "NoName")
+								+ " , "
+								+ ((copyrightEmail != null) ? copyrightEmail : "NoEmail")
+								+ " )."
+							);*/
 						mp.addBodyPart(textPart);
 						
 						for(FileItem item : attachments){

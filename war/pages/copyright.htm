@@ -20,6 +20,8 @@
 					<label for="copyright-date">Желаемый срок выполнения - до</label>
 					<input class="form-control" type="date" value="2017-08-19" id="copyright-date" name="copyright-date">
 				</div>
+<!-- 				<input type="hidden" id="copyright-name" name="copyright-name"> -->
+<!-- 				<input type="hidden" id="copyright-email" name="copyright-email"> -->
 				<button type="submit">Заказать</button>
 			</form>
 		</div>
@@ -58,53 +60,66 @@
 					  	function sendOrderForm() {
 					  		
 					  		console.log(profile);
-					  		/*
-					  		// Get form
-					  		var orderForm = $('#sendOrderForm')[0];
-
-					  		// Create an FormData object
-	    					var data = new FormData(orderForm);
-
-        					// If you want to add an extra field for the FormData
-        					//data.append("CustomField", "This is some extra data, testing");
-
-        					// disabled the submit button
-        					$("#sendOrderForm button[type=submit]").prop("disabled", true);
-
-							$.ajax({
-								type: 'POST',
-								enctype: 'multipart/form-data',
-								url: '/prostogae?action=send-order',
-								data: data,
-					            processData: false,
-					            contentType: false,
-					            timeout: 600000,
-								cache: false
-						  	}).done(function(responseText, textStatus, jqXHR) {
-								//if got code 200
-								if(responseText !== '' && responseText !== 'error'){
-								  
-									//
-									console.log(responseText);
-
-								  	alert("Заказ успешно отправлен");
-								} else {
-								  
+					  		//Если пользователь не аутентифицирован -
+					  		//выдаем ему сообщение об этом 
+					  		if(profile === undefined) {
+					  			
+					  			alert("Сначала войдите в свой аккаунт Google");
+					  			//если аутентифицирован -
+					  			//готовим и отправляем форму заказа
+					  		} else {
+					  			
+					  			//Заполняем скрытые поля имени и почты
+					  			//$("#sendOrderForm input[name=copyright-name]").val(profile.getName());
+					  			//$("#sendOrderForm input[name=copyright-email]").val(profile.getEmail());
+						  		// Get form
+						  		var orderForm = $('#sendOrderForm')[0];
+	
+						  		// Create an FormData object
+		    					var data = new FormData(orderForm);
+	
+	        					//Заполняем дополнительные поля имени и почты
+	        					data.append("copyright-name", profile.getName());
+	        					data.append("copyright-email", profile.getEmail());
+	
+	        					// disabled the submit button
+	        					$("#sendOrderForm button[type=submit]").prop("disabled", true);
+	
+								$.ajax({
+									type: 'POST',
+									enctype: 'multipart/form-data',
+									url: '/prostogae?action=send-order',
+									data: data,
+						            processData: false,
+						            contentType: false,
+						            timeout: 600000,
+									cache: false
+							  	}).done(function(responseText, textStatus, jqXHR) {
+									//if got code 200
+									if(responseText !== '' && responseText !== 'error'){
+									  
+										//
+										console.log(responseText);
+	
+									  	alert("Заказ успешно отправлен");
+									} else {
+									  
+										alert("Произошла ошибка. Обратитесь к разработчику сайта");
+									}
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+									// enabled the submit button
+									$("#sendOrderForm button[type=submit]").prop("disabled", false);
+							  	}).fail(function(jqXHR, textStatus, errorThrown) {
+									  
+									//if got code 404 or 500, etc.
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+									// enabled the submit button
+									$("#sendOrderForm button[type=submit]").prop("disabled", false);
 									alert("Произошла ошибка. Обратитесь к разработчику сайта");
-								}
-								//stopLoadingAnimation();
-								$(".loader").css("display", "none");
-								// enabled the submit button
-								$("#sendOrderForm button[type=submit]").prop("disabled", false);
-						  	}).fail(function(jqXHR, textStatus, errorThrown) {
-								  
-								//if got code 404 or 500, etc.
-								//stopLoadingAnimation();
-								$(".loader").css("display", "none");
-								// enabled the submit button
-								$("#sendOrderForm button[type=submit]").prop("disabled", false);
-								// alert("Произошла ошибка. Обратитесь к разработчику сайта");
-						  	});*/
+							  	});
+					  		}
 					  	}
 
 					  	/* Назначаем вызов функции отправки заказа
