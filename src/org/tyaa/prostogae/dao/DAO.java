@@ -10,5 +10,6 @@ public class DAO extends DAOBase {
 	static {
 		
 		ObjectifyService.register(PageData.class);
+		ObjectifyService.register(Order.class);
 	}
 }

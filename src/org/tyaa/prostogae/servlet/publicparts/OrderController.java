@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -23,6 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.tyaa.prostogae.dao.OrderDAO;
+import org.tyaa.prostogae.entity.Order;
+import org.tyaa.prostogae.entity.OrderStatus;
+import org.tyaa.prostogae.entity.OrderType;
 import org.tyaa.prostogae.servlet.commonparts.Mailer;
 
 import com.google.gson.Gson;
@@ -49,6 +55,11 @@ public class OrderController {
 		String responseJsonString = "start";
 		
 		try {
+			
+			String copyrightTask = null;
+			String copyrightDate = null;
+			String copyrightName = null;
+			String copyrightEmail = null;
 			
 			//Помощник по отправке сообщений на электронную почту
 			Mailer mailer = new Mailer();
@@ -87,10 +98,10 @@ public class OrderController {
 				List<FileItem> items = upload.parseRequest(_req);
 				iter = items.iterator();
 				
-				String copyrightTask = null;
+				/*String copyrightTask = null;
 				String copyrightDate = null;
 				String copyrightName = null;
-				String copyrightEmail = null;
+				String copyrightEmail = null;*/
 				
 				//Перебираем список объектов с полученными данными
 				while (iter.hasNext()) {
@@ -149,10 +160,10 @@ public class OrderController {
 				mailer.sendMulipartMsg(mp, "New order");
 			} else {
 				
-				String copyrightTask = _req.getParameter("copyright-task");
-				String copyrightDate = _req.getParameter("copyright-date");
-				String copyrightName = _req.getParameter("copyright-name");
-				String copyrightEmail = _req.getParameter("copyright-email");
+				copyrightTask = _req.getParameter("copyright-task");
+				copyrightDate = _req.getParameter("copyright-date");
+				copyrightName = _req.getParameter("copyright-name");
+				copyrightEmail = _req.getParameter("copyright-email");
 				
 				String messageString =
 						copyrightTask
@@ -173,7 +184,22 @@ public class OrderController {
 						, "karakal2586@gmail.com"
 						, "Admin");
 			}
-			//TODO add new order record to DB
+			//Добавляем в БД запись о новом заказе
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+			Order newOrder = new Order(
+					OrderType.photoprocessing
+					, copyrightName
+					, copyrightEmail
+					, copyrightTask
+					, OrderStatus.placed
+					, sdf.format(new Date())
+					, copyrightDate
+					, ""
+					, ""
+					, ""
+					, ""
+				);
+			(new OrderDAO()).saveOrder(newOrder);
 			//Записываем в результат Json-строку "ok"
 			responseJsonString = mGson.toJson("ok");
     	} catch(Exception ex) {

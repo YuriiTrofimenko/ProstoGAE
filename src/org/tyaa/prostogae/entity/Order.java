@@ -9,6 +9,8 @@ public class Order {
 	//Код заказа, генерируется автоматически в DataStore
 	@Id
 	private Long id;
+	//Тип заказа
+	private OrderType type;
 	//Имя пользователя Google-аккаунта
 	private String username;
 	//Адрес электронной почты пользователя Google-аккаунта
@@ -32,10 +34,20 @@ public class Order {
 	
 	public Order() { }
 
-	public Order(String username, String email, String task, OrderStatus state, String placedDate,
-			String desiredDeadlineDate, String deadlineDate, String paidDate, String launchStartDate,
-			String fulfilledDate) {
+	public Order(
+			OrderType type
+			, String username
+			, String email
+			, String task
+			, OrderStatus state
+			, String placedDate
+			, String desiredDeadlineDate
+			, String deadlineDate
+			, String paidDate
+			, String launchStartDate
+			, String fulfilledDate) {
 		super();
+		this.type = type;
 		this.username = username;
 		this.email = email;
 		this.task = task;
@@ -126,6 +138,14 @@ public class Order {
 
 	public void setFulfilledDate(String fulfilledDate) {
 		this.fulfilledDate = fulfilledDate;
+	}
+
+	public OrderType getType() {
+		return type;
+	}
+
+	public void setType(OrderType type) {
+		this.type = type;
 	}
 
 	public Long getId() {
