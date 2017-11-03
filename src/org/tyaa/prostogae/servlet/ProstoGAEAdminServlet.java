@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.tyaa.prostogae.dao.DAO;
 import org.tyaa.prostogae.entity.PageData;
 import org.tyaa.prostogae.entity.PagesData;
+import org.tyaa.prostogae.servlet.adminparts.AdminOrderController;
+import org.tyaa.prostogae.servlet.publicparts.OrderController;
 
 import com.google.gson.Gson;
 import com.googlecode.objectify.Objectify;
@@ -161,36 +163,22 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 	        		out.print("error");
 	        	}
 			} else if(actionString.equals("signin")) {
-				/*//TODO validator
-	        	
-	        	//out.print(req.getParameter("name"));
-				
-				String id = req.getParameter("id");
-				String email = req.getParameter("email");
-				String password = req.getParameter("passwd");
-				
-				//Customer fromDBCustomer = mOFY.get(Customer.class, id);
-				
-				Query<Customer> query = mOFY.query(Customer.class);
-    			query.filter("email", email).filter("password", password);
-    			
-    			List<Customer> fromDBCustomer = (List<Customer>) query.list();
-    			
-    			List<Service> results = (List<Service>) query.list();
-    			
-    			if(!results.isEmpty()){
-    				
-    				Gson gson = new Gson();
-    			    String json = gson.toJson(results);
-    			    out.print(json.toString());
-    			}
-    			
-				Gson gson = new Gson();
-			    String json =
-		    		(fromDBCustomer != null && fromDBCustomer.size() != 0)
-		    			? gson.toJson(fromDBCustomer.get(0))
-    					: gson.toJson(new Customer());
-			    out.print(json);*/
+				//TODO
+			} else if(actionString.equals("get-orders-data-lazy")) {
+				//Получение кратких данных о заказах
+				String getAllOrdersLazyResultJsonString =
+	        			(new AdminOrderController()).getAllOrdersLazy();
+	        	out.print(getAllOrdersLazyResultJsonString);
+			} else if(actionString.equals("get-orders-data")) {
+				//Получение полных данных о заказах
+				String getAllOrdersResultJsonString =
+	        			(new AdminOrderController()).getAllOrders();
+	        	out.print(getAllOrdersResultJsonString);
+			} else if(actionString.equals("get-order-data")) {
+				//Получение полных данных об одном заказе
+				String getOrderResultJsonString =
+	        			(new AdminOrderController()).getOrderById(req);
+	        	out.print(getOrderResultJsonString);
 			}
 		} else if(req.getParameterMap().isEmpty()){
 			

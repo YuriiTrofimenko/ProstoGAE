@@ -1,48 +1,163 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-12" id="page-container">
-			Заказы
+		<div class="col-6" id="page-container"></div>
+		<div class="col-6">
+			<div id="copyright-detail-type"></div>
+			<div id="copyright-detail-type"></div>
+			<form id="form">
+				<div class="form-group">
+					<label for="copyright-edit-deadline-date">Устанавливаемая администратором дата выполнения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-deadline-date" name="copyright-edit-deadline-date">
+				</div>
+				<div class="form-group">
+					<label for="copyright-edit-paid-date">Дата оплаты</label>
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-paid-date" name="copyright-edit-paid-date">
+				</div>
+				<div class="form-group">
+					<label for="copyright-edit-launch-start-date">Дата начала выполнения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-launch-start-date" name="copyright-edit-launch-start-date">
+				</div>
+				<div class="form-group">
+					<label for="copyright-edit-fulfilled-date">Дата завершения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-fulfilled-date" name="copyright-edit-fulfilled-date">
+				</div>
+				<input type="hidden" value="" id="order-id">
+				<button type="submit">Сохранить</button>
+			</form>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
 	app.handler(function() {
 
-		/*console.log('this ' + $(this));
 		var $container = $(this).find("#page-container");
-		console.log('container ' + $container);*/
 
 		return function(params) {
 
-			/*$.ajax({
-				type: 'POST',
-				url: '/prostogae?action=get-data-by-section&section=home',
-				//contentType: 'text/plain',
-				cache: false
-		  	}).done(function(responseText, textStatus, jqXHR) {
-				  //if got code 200
-				  if(responseText !== '' && responseText !== 'error'){
-					  
-						//
-						console.log(responseText.content);
-						//$('section#copyright p#p-content').text(responseText.content);
+			function populateTable() {
+				$.ajax({
+					type: 'POST',
+					url: '/admin?action=get-orders-data-lazy',
+					cache: false
+			  	}).done(function(responseText, textStatus, jqXHR) {
+					  //if got code 200
+					  if(responseText !== '' && responseText !== 'error'){
 
-					  	var template = Hogan.compile("<p>{{content}}</p>");
-						//var output = template.render(responseText);
-						//var $container = $(this).find("section#copyright #page-container");
-					  	$container.html(template.render(responseText));
-				  } else {
+						  	var template = Hogan.compile(
+						  		'<table class="table">'
+								+  '<thead>'
+								+    '<tr>'
+								+      '<th>ID</th>'
+								+      '<th>тип</th>'
+								+      '<th>заказчик</th>'
+								+      '<th>состояние</th>'
+								+    '</tr>'
+								+  '</thead>'
+								+  '<tbody>'
+					  			+ 		'{{#ordersData}}'
+			  					+ 			'<tr>'
+								+   			'<th scope="row">{{id}}</th>'
+								+   			'<td>{{type}}</td>'
+								+   			'<td>{{username}}</td>'
+								+   			'<td>{{state}}</td>'
+								+ 			'</tr>'
+					      		+ 		'{{/ordersData}}'
+					      		+	'</tbody>'
+								+'</table>'
+						  		);
+							//
+						  	$container.html(template.render(responseText));
+
+						  	//
+						  	$('tbody th').click(function(event){
+							
+								//
+								event.preventDefault();
+								//
+								$.ajax({
+									type: 'POST',
+									url: '/admin?action=get-order-data&id=' + $(event.target).text(),
+									//contentType: 'text/plain',
+									cache: false
+							  	}).done(function(responseText, textStatus, jqXHR) {
+									  //if got code 200
+									  if(responseText !== '' && responseText !== 'error'){
+
+										  	$('#order-id').val(responseText.id);
+										  	$('#').val(responseText.title);
+										  	$('#').val(responseText.content);
+
+										  	$('form').fadeIn(600);
+									  } else {
+										  
+									  	alert("Произошла ошибка. Обратитесь к разработчику сайта");
+									  }
+									  //stopLoadingAnimation();
+									  $(".loader").css("display", "none");
+							  	}).fail(function(jqXHR, textStatus, errorThrown) {
+									  
+									//if got code 404 or 500, etc.
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
+							  	});
+							});
+						  	//
+						  	$('form button').click(function(event){
+							
+								//
+								event.preventDefault();
+								//
+								$.ajax({
+									type: 'POST',
+									url: '/admin?action=edit-page-data&id='
+									+ $('#section-id').val()
+									+ '&title='
+									+ encodeURIComponent($('#section-title').val())
+									+ '&content='
+									+ encodeURIComponent($('#section-content').val()),
+									//contentType: 'text/plain',
+									cache: false
+							  	}).done(function(responseText, textStatus, jqXHR) {
+									  //if got code 200
+									  if(responseText !== '' && responseText !== 'error'){
+										  
+											//
+											console.log(responseText);
+											$('form').fadeOut(600);
+											//
+		  									populateTable();
+									  } else {
+										  
+										  //
+										  alert("Произошла ошибка. Обратитесь к разработчику сайта");
+									  }
+									  //stopLoadingAnimation();
+									  $(".loader").css("display", "none");
+							  	}).fail(function(jqXHR, textStatus, errorThrown) {
+									  
+									//if got code 404 or 500, etc.
+									//stopLoadingAnimation();
+									$(".loader").css("display", "none");
+									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
+							  	});
+							});
+					  } else {
+						  
+					  	alert("Произошла ошибка. Обратитесь к разработчику сайта");
+					  }
+					  //stopLoadingAnimation();
+					  $(".loader").css("display", "none");
+			  	}).fail(function(jqXHR, textStatus, errorThrown) {
 					  
-				  //
-				  }
-				  //stopLoadingAnimation();
-				  $(".loader").css("display", "none");
-		  	}).fail(function(jqXHR, textStatus, errorThrown) {
-				  
-				//if got code 404 or 500, etc.
-				//stopLoadingAnimation();
-				$(".loader").css("display", "none");
-		  	});*/
+					//if got code 404 or 500, etc.
+					//stopLoadingAnimation();
+					$(".loader").css("display", "none");
+					// alert("Произошла ошибка. Обратитесь к разработчику сайта");
+			  	});
+		  	}
+		  	//
+		  	populateTable();
 	  	};
   	});
 </script>

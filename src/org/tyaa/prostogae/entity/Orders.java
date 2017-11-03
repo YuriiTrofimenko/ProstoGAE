@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Orders {
 	
-	private List<Order> orders;
+	public List<Order> orders;
 	
 	public Orders() { }
 	
@@ -12,4 +12,6 @@ public class Orders {
 		
 		orders = _orders;
 	}
+	
+	public int size() {return orders.size();}
 }
