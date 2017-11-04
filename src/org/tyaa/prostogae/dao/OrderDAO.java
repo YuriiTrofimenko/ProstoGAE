@@ -2,9 +2,9 @@ package org.tyaa.prostogae.dao;
 
 import java.util.List;
 
-import org.tyaa.prostogae.entity.Order;
+import org.tyaa.prostogae.entity.OrderData;
 import org.tyaa.prostogae.entity.PageData;
-import org.tyaa.prostogae.entity.Orders;
+import org.tyaa.prostogae.entity.OrdersData;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
@@ -23,18 +23,18 @@ public class OrderDAO {
 		mOFY = mDAO.ofy();
 	}
 	
-	public Order getOrder(String _id) {
+	public OrderData getOrder(String _id) {
 		
-		return mOFY.get(Order.class, Long.parseLong(_id));
+		return mOFY.get(OrderData.class, Long.parseLong(_id));
 	}
 	
-	public Orders getAllOrders() {
+	public OrdersData getAllOrders() {
 			
-		Query<Order> query = mOFY.query(Order.class);
-		return new Orders((List<Order>) query.list());
+		Query<OrderData> query = mOFY.query(OrderData.class);
+		return new OrdersData((List<OrderData>) query.list());
 	}
 	
-	public void saveOrder(Order _order) {
+	public void saveOrder(OrderData _order) {
 		
 		mOFY.put(_order);
 	}

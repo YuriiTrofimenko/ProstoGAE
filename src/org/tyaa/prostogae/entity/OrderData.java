@@ -4,7 +4,7 @@ import javax.persistence.Id;
 /**
  * Заказ
  */
-public class Order {
+public class OrderData {
 	
 	//Код заказа, генерируется автоматически в DataStore
 	@Id
@@ -32,9 +32,9 @@ public class Order {
 	//Дата завершения
 	private String fulfilledDate;
 	
-	public Order() { }
+	public OrderData() { }
 
-	public Order(
+	public OrderData(
 			OrderType type
 			, String username
 			, String email

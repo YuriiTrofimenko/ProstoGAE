@@ -4,8 +4,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.tyaa.prostogae.dao.OrderDAO;
-import org.tyaa.prostogae.entity.Order;
-import org.tyaa.prostogae.entity.Orders;
+import org.tyaa.prostogae.entity.OrderData;
+import org.tyaa.prostogae.entity.OrdersData;
 import org.tyaa.prostogae.entity.PageData;
 
 import com.google.gson.Gson;
@@ -32,13 +32,13 @@ public class AdminOrderController {
 		
 		try {
 			
-			Orders ordersData = (new OrderDAO()).getAllOrders();
+			OrdersData ordersData = (new OrderDAO()).getAllOrders();
 			
 			if(ordersData != null){
 				
 				for(int i = 0; i < ordersData.size(); i++){
 					//Зануляем все ненужные при данном запросе поля
-					Order currentOrder = ordersData.orders.get(i);
+					OrderData currentOrder = ordersData.ordersData.get(i);
 					currentOrder.setTask("");
 					currentOrder.setDeadlineDate(null);
 					currentOrder.setDesiredDeadlineDate(null);
@@ -71,7 +71,7 @@ public class AdminOrderController {
 		
 		try {
 			
-			Orders ordersData = (new OrderDAO()).getAllOrders();
+			OrdersData ordersData = (new OrderDAO()).getAllOrders();
 			
 			if(ordersData != null){
 				
@@ -101,7 +101,7 @@ public class AdminOrderController {
 		try {
 			
 			id = _req.getParameter("id");
-			Order order = (new OrderDAO()).getOrder(id);
+			OrderData order = (new OrderDAO()).getOrder(id);
 			
 			if(order != null){
 				

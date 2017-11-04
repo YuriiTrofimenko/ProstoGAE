@@ -2,24 +2,40 @@
 	<div class="row">
 		<div class="col-6" id="page-container"></div>
 		<div class="col-6">
-			<div id="copyright-detail-type"></div>
-			<div id="copyright-detail-type"></div>
 			<form id="form">
 				<div class="form-group">
-					<label for="copyright-edit-deadline-date">Устанавливаемая администратором дата выполнения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-deadline-date" name="copyright-edit-deadline-date">
+					<div>
+						<span>Тип заказа: </span><span id="order-detail-type"></span>
+					</div>
+					<div>
+						<span>Имя пользователя: </span><span id="order-detail-username"></span>
+					</div>
+					<div>
+						<span>Email: </span><span id="order-detail-email"></span>
+					</div>
+					<div>
+						<span>Задание: </span><span id="order-detail-task"></span>
+					</div>
+					<div>
+						<span>Состояние: </span><span id="order-detail-state"></span>
+					</div>
+					<div>
+						<span>Дата добавления: </span><span id="order-detail-placedDate"></span>
+					</div>
+					<div>
+						<span>Желаемая дата выполнения: </span><span id="order-detail-desiredDeadlineDate"></span>
+					</div>
 				</div>
+				<hr>
 				<div class="form-group">
-					<label for="copyright-edit-paid-date">Дата оплаты</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-paid-date" name="copyright-edit-paid-date">
-				</div>
-				<div class="form-group">
-					<label for="copyright-edit-launch-start-date">Дата начала выполнения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-launch-start-date" name="copyright-edit-launch-start-date">
-				</div>
-				<div class="form-group">
-					<label for="copyright-edit-fulfilled-date">Дата завершения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="copyright-edit-fulfilled-date" name="copyright-edit-fulfilled-date">
+					<label for="order-edit-deadlineDate">Устанавливаемая администратором дата выполнения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="order-edit-deadlineDate" name="order-edit-deadlineDate" data-provide="datepicker">
+					<label for="order-edit-paidDate">Дата оплаты</label>
+					<input class="form-control" type="date" value="2017-08-19" id="order-edit-paidDate" name="order-edit-paidDate" data-provide="datepicker">
+					<label for="order-edit-launchStartDate">Дата начала выполнения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="order-edit-launchStartDate" name="order-edit-launchStartDate" data-provide="datepicker">
+					<label for="order-edit-fulfilledDate">Дата завершения</label>
+					<input class="form-control" type="date" value="2017-08-19" id="order-edit-fulfilledDate" name="order-edit-fulfilledDate" data-provide="datepicker">
 				</div>
 				<input type="hidden" value="" id="order-id">
 				<button type="submit">Сохранить</button>
@@ -81,11 +97,24 @@
 									cache: false
 							  	}).done(function(responseText, textStatus, jqXHR) {
 									  //if got code 200
+									  console.log(responseText);
+									  console.log($('#order-detail-type'));
+									  console.log($('#order-detail-type').val());
 									  if(responseText !== '' && responseText !== 'error'){
-
+										  	
+										  console.log(responseText.type);
 										  	$('#order-id').val(responseText.id);
-										  	$('#').val(responseText.title);
-										  	$('#').val(responseText.content);
+										  	$('#order-detail-type').text(responseText.type);
+										  	$('#order-detail-username').text(responseText.username);
+										  	$('#order-detail-email').text(responseText.email);
+										  	$('#order-detail-task').text(responseText.task);
+										  	$('#order-detail-state').text(responseText.state);
+										  	$('#order-detail-placedDate').text(responseText.placedDate);
+										  	$('#order-detail-desiredDeadlineDate').text(responseText.desiredDeadlineDate);
+										  	$('#order-edit-deadlineDate').text(responseText.deadlineDate);
+										  	$('#order-edit-paidDate').text(responseText.paidDate);
+										  	$('#order-edit-launchStartDate').text(responseText.launchStartDate);
+										  	$('#order-edit-fulfilledDate').text(responseText.fulfilledDate);
 
 										  	$('form').fadeIn(600);
 									  } else {
@@ -104,7 +133,7 @@
 							});
 						  	//
 						  	$('form button').click(function(event){
-							
+							/*
 								//
 								event.preventDefault();
 								//
@@ -141,6 +170,7 @@
 									$(".loader").css("display", "none");
 									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 							  	});
+								*/
 							});
 					  } else {
 						  
@@ -156,6 +186,10 @@
 					// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 			  	});
 		  	}
+			//$('#order-edit-deadlineDate').datetimepicker();
+			//$('#order-edit-paidDate').datetimepicker();
+			//$('#order-edit-launchStartDate').datetimepicker();
+			//$('#order-edit-fulfilledDate').datetimepicker();
 		  	//
 		  	populateTable();
 	  	};

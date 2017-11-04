@@ -26,7 +26,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.tyaa.prostogae.dao.OrderDAO;
-import org.tyaa.prostogae.entity.Order;
+import org.tyaa.prostogae.entity.OrderData;
 import org.tyaa.prostogae.entity.OrderStatus;
 import org.tyaa.prostogae.entity.OrderType;
 import org.tyaa.prostogae.servlet.commonparts.Mailer;
@@ -186,7 +186,7 @@ public class OrderController {
 			}
 			//Добавляем в БД запись о новом заказе
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-			Order newOrder = new Order(
+			OrderData newOrder = new OrderData(
 					OrderType.photoprocessing
 					, copyrightName
 					, copyrightEmail
