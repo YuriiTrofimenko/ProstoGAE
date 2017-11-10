@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.tyaa.prostogae.dao.DAO;
+import org.tyaa.prostogae.entity.OrderData;
 import org.tyaa.prostogae.entity.PageData;
 import org.tyaa.prostogae.entity.PagesData;
 import org.tyaa.prostogae.servlet.adminparts.AdminOrderController;
@@ -179,6 +180,12 @@ public class ProstoGAEAdminServlet extends HttpServlet {
 				String getOrderResultJsonString =
 	        			(new AdminOrderController()).getOrderById(req);
 	        	out.print(getOrderResultJsonString);
+			} else if(actionString.equals("edit-order-data")) {
+	        	
+				//Получение полных данных об одном заказе
+				String editOrderResultJsonString =
+	        			(new AdminOrderController()).editOrder(req);
+	        	out.print(editOrderResultJsonString);
 			}
 		} else if(req.getParameterMap().isEmpty()){
 			

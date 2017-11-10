@@ -117,4 +117,38 @@ public class AdminOrderController {
 		
 		return responseJsonString;
 	}
+	
+	/**
+	 * Обновление информации о заказе в БД и возврат сообщения об успешности операции
+	 * */
+	public String editOrder(HttpServletRequest _req) {
+		
+		//Строка ответа клиенту (браузеру)
+		String responseJsonString = "ok";
+		String id = null;
+		
+		try {
+			
+			id = _req.getParameter("id");
+			OrderDAO orderDAO = new OrderDAO();
+			OrderData order = orderDAO.getOrder(id);
+        	if(order != null){
+        		
+        		order.setDeadlineDate(_req.getParameter("deadlineDate"));
+        		order.setPaidDate(_req.getParameter("paidDate"));
+        		order.setLaunchStartDate(_req.getParameter("launchStartDate"));
+        		order.setFulfilledDate(_req.getParameter("fulfilledDate"));
+        		orderDAO.saveOrder(order);
+        		responseJsonString = mGson.toJson(order);
+        	} else {
+        		
+        		responseJsonString = mGson.toJson("error");
+        	}
+    	} catch(Exception ex) {
+    		
+    		responseJsonString = mGson.toJson("error");
+    	}
+		
+		return responseJsonString;
+	}
 }

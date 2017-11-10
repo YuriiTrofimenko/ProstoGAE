@@ -147,13 +147,18 @@ public class OrderController {
 				
 				for(FileItem item : attachments){
 					
-					MimeBodyPart attachment = new MimeBodyPart();
-					InputStream attachmentDataStream =
-							new ByteArrayInputStream(item.get());
-					attachment.setFileName(item.getName());
-					//attachment.setContent(attachmentDataStream, "image/jpeg");
-					attachment.setContent(attachmentDataStream, item.getContentType());
-					mp.addBodyPart(attachment);
+					try {
+						
+						MimeBodyPart attachment = new MimeBodyPart();
+						InputStream attachmentDataStream =
+								new ByteArrayInputStream(item.get());
+						attachment.setFileName(item.getName());
+						//attachment.setContent(attachmentDataStream, "image/jpeg");
+						attachment.setContent(attachmentDataStream, item.getContentType());
+						mp.addBodyPart(attachment);
+					} catch (Exception e) {
+						//
+					}
 				}
 
 				// Отправляем сообщение с вложениями
@@ -185,7 +190,7 @@ public class OrderController {
 						, "Admin");
 			}
 			//Добавляем в БД запись о новом заказе
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			OrderData newOrder = new OrderData(
 					OrderType.photoprocessing
 					, copyrightName

@@ -126,15 +126,19 @@
 					  	в теле обработчика клика по кнопке отправки формы */
 					  	$('form button').click(function(event){
 					  		
-					  		console.log($('#copyright-task').val());
-					  		console.log(encodeURIComponent($('#copyright-task').val()));
+					  		//console.log($('#copyright-task').val());
+					  		//console.log(encodeURIComponent($('#copyright-task').val()));
 
 					  		//data.set('copyright-task', encodeURIComponent($('#copyright-task').val()));
 					  		
 					  		var encodedCopyrightTaskVal = encodeURIComponent($('#copyright-task').val());
 					  		var decodedCopyrightTaskVal = $('#copyright-task').val();
 					  		
+					  		var encodedCopyrightNameVal = encodeURIComponent($('#copyright-name').val());
+					  		var decodedCopyrightNameVal = $('#copyright-name').val();
+					  		
 					  		$('#copyright-task').val(encodedCopyrightTaskVal);
+					  		$('#copyright-name').val(encodedCopyrightNameVal);
 						
 							//Предотвращаем стандартные действия при данном событии
 							event.preventDefault();
@@ -142,6 +146,7 @@
 							sendOrderForm();
 							
 							$('#copyright-task').val(decodedCopyrightTaskVal);
+							$('#copyright-name').val(decodedCopyrightNameVal);
 						});
 				  } else {
 					  

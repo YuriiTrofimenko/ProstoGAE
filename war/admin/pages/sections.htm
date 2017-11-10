@@ -12,7 +12,7 @@
 					<textarea class="form-control" id="section-content" rows="5"></textarea>
 				</div>
 				<input type="hidden" value="" id="section-id">
-				<button type="submit">Сохранить</button>
+				<button id="submitEditedSection" type="submit">Сохранить</button>
 			</form>
 		</div>
 	</div>
@@ -35,7 +35,7 @@
 					  if(responseText !== '' && responseText !== 'error'){
 						  
 							//
-							console.log(responseText.title);
+							//console.log(responseText.title);
 
 						  	var template = Hogan.compile(
 						  		'<table class="table">'
@@ -96,7 +96,7 @@
 							  	});
 							});
 						  	//
-						  	$('form button').click(function(event){
+						  	$('#submitEditedSection').click(function(event){
 							
 								//
 								event.preventDefault();
@@ -116,7 +116,7 @@
 									  if(responseText !== '' && responseText !== 'error'){
 										  
 											//
-											console.log(responseText);
+											//console.log(responseText);
 											$('form').fadeOut(600);
 											//
 		  									populateTable();

@@ -38,15 +38,17 @@ public class ProstoGAEServlet extends HttpServlet {
 		
 		PrintWriter out = resp.getWriter();
 		
-		// TODO handle exceptions
+		// проверяем, содержит ли запрос параметр с именем "действие"
 		if (req.getParameterMap().containsKey("action")) {
-			
+			// если да - проверяем, чему он равен
 			String actionString = req.getParameter("action");
-			
+			// отправка заказа
 	        if(actionString.equals("send-order")){
-	        		        	
+	        	// вызываем метод отправки заказа администратору по почте
+	        	// и сохранения в нереляционную БД
 	        	String createOrderResultJsonString =
 	        			(new OrderController()).createOrder(getServletContext(), req);
+	        	// отправляем ответ клиенту - успешно ли произошло создание заказа
 	        	out.print(createOrderResultJsonString);
 	        } else if(actionString.equals("get-data-by-section")) {
 				

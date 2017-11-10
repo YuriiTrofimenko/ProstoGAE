@@ -29,16 +29,16 @@
 				<hr>
 				<div class="form-group">
 					<label for="order-edit-deadlineDate">Устанавливаемая администратором дата выполнения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="order-edit-deadlineDate" name="order-edit-deadlineDate" data-provide="datepicker">
+					<input class="form-control" type="date" id="order-edit-deadlineDate" name="order-edit-deadlineDate" class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-paidDate">Дата оплаты</label>
-					<input class="form-control" type="date" value="2017-08-19" id="order-edit-paidDate" name="order-edit-paidDate" data-provide="datepicker">
+					<input class="form-control" type="date" id="order-edit-paidDate" name="order-edit-paidDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-launchStartDate">Дата начала выполнения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="order-edit-launchStartDate" name="order-edit-launchStartDate" data-provide="datepicker">
+					<input class="form-control" type="date" id="order-edit-launchStartDate" name="order-edit-launchStartDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-fulfilledDate">Дата завершения</label>
-					<input class="form-control" type="date" value="2017-08-19" id="order-edit-fulfilledDate" name="order-edit-fulfilledDate" data-provide="datepicker">
+					<input class="form-control" type="date" id="order-edit-fulfilledDate" name="order-edit-fulfilledDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 				</div>
 				<input type="hidden" value="" id="order-id">
-				<button type="submit">Сохранить</button>
+				<button id="submitEditedOrder" type="submit">Сохранить</button>
 			</form>
 		</div>
 	</div>
@@ -48,7 +48,7 @@
 
 		var $container = $(this).find("#page-container");
 
-		return function(params) {
+		return function(params) {			
 
 			function populateTable() {
 				$.ajax({
@@ -97,12 +97,12 @@
 									cache: false
 							  	}).done(function(responseText, textStatus, jqXHR) {
 									  //if got code 200
-									  console.log(responseText);
-									  console.log($('#order-detail-type'));
-									  console.log($('#order-detail-type').val());
+									  //console.log(responseText);
+									  //console.log($('#order-detail-type'));
+									  //console.log($('#order-detail-type').val());
 									  if(responseText !== '' && responseText !== 'error'){
 										  	
-										  console.log(responseText.type);
+										  //console.log(responseText.type);
 										  	$('#order-id').val(responseText.id);
 										  	$('#order-detail-type').text(responseText.type);
 										  	$('#order-detail-username').text(responseText.username);
@@ -132,19 +132,26 @@
 							  	});
 							});
 						  	//
-						  	$('form button').click(function(event){
-							/*
+						  	$('#submitEditedOrder').click(function(event){
+							
 								//
 								event.preventDefault();
 								//
+								console.log($('#order-edit-deadlineDate'));
+								console.log($('#order-edit-deadlineDate').text());
+								
 								$.ajax({
 									type: 'POST',
-									url: '/admin?action=edit-page-data&id='
-									+ $('#section-id').val()
-									+ '&title='
-									+ encodeURIComponent($('#section-title').val())
-									+ '&content='
-									+ encodeURIComponent($('#section-content').val()),
+									url: '/admin?action=edit-order-data&id='
+									+ $('#order-id').val()
+									+ '&deadlineDate='
+									+ $('#order-edit-deadlineDate').val()
+									+ '&paidDate='
+									+ $('#order-edit-paidDate').val()
+									+ '&launchStartDate='
+									+ $('#order-edit-launchStartDate').val()
+									+ '&fulfilledDate='
+									+ $('#order-edit-fulfilledDate').val(),
 									//contentType: 'text/plain',
 									cache: false
 							  	}).done(function(responseText, textStatus, jqXHR) {
@@ -152,7 +159,7 @@
 									  if(responseText !== '' && responseText !== 'error'){
 										  
 											//
-											console.log(responseText);
+											//console.log(responseText);
 											$('form').fadeOut(600);
 											//
 		  									populateTable();
@@ -170,7 +177,6 @@
 									$(".loader").css("display", "none");
 									// alert("Произошла ошибка. Обратитесь к разработчику сайта");
 							  	});
-								*/
 							});
 					  } else {
 						  
