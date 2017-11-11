@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+		
 	$.getScript("js/bootstrap/bootstrap.min.js", function(){
 	
 	   console.log("bootstrap loaded");

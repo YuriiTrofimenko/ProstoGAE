@@ -16,9 +16,34 @@
 					<div>
 						<span>Задание: </span><span id="order-detail-task"></span>
 					</div>
-					<div>
+					<!-- <div>
 						<span>Состояние: </span><span id="order-detail-state"></span>
-					</div>
+					</div> -->
+					<!-- <div id="order-detail-state" class="dropdown">
+					  <span>Состояние: </span><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					    <a class="dropdown-item" href="#">orderStatus[placed]</a>
+					    <a class="dropdown-item" href="#">orderStatus[canceled]</a>
+					    <a class="dropdown-item" href="#">orderStatus[paid]</a>
+					    <a class="dropdown-item" href="#">orderStatus[launching]</a>
+					    <a class="dropdown-item" href="#">orderStatus[suspended]</a>
+					    <a class="dropdown-item" href="#">orderStatus[fulfilled]</a>
+					  </div>
+					</div> -->
+					<nav id="primary_nav_wrap">
+						<ul>
+							<li><a id="order-detail-state" href="#"></a>
+							    <ul>
+							      <li><a id="order-detail-state-placed" href="#"></a></li>
+							      <li><a id="order-detail-state-canceled" href="#"></a></li>
+							      <li><a id="order-detail-state-paid" href="#"></a></li>
+							      <li><a id="order-detail-state-launching" href="#"></a></li>
+							      <li><a id="order-detail-state-suspended" href="#"></a></li>
+							      <li><a id="order-detail-state-fulfilled" href="#"></a></li>
+							    </ul>
+							</li>
+						</ul>
+					</nav>
 					<div>
 						<span>Дата добавления: </span><span id="order-detail-placedDate"></span>
 					</div>
@@ -47,6 +72,13 @@
 	app.handler(function() {
 
 		var $container = $(this).find("#page-container");
+		
+		var statusKeysCount = 0;
+		$("#primary_nav_wrap > ul > li > ul > li").each( function(index, element){
+		    //console.log( $( this ).text() );
+		    $(this).text(orderStatus[orderStatusKeys[statusKeysCount]]);
+		    statusKeysCount++;
+		});
 
 		return function(params) {			
 
@@ -137,8 +169,8 @@
 								//
 								event.preventDefault();
 								//
-								console.log($('#order-edit-deadlineDate'));
-								console.log($('#order-edit-deadlineDate').text());
+								//console.log($('#order-edit-deadlineDate'));
+								//console.log($('#order-edit-deadlineDate').text());
 								
 								$.ajax({
 									type: 'POST',
