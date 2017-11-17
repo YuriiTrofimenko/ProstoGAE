@@ -30,20 +30,22 @@
 					    <a class="dropdown-item" href="#">orderStatus[fulfilled]</a>
 					  </div>
 					</div> -->
-					<nav id="primary_nav_wrap">
-						<ul>
-							<li><a id="order-detail-state" href="#"></a>
-							    <ul>
-							      <li><a id="order-detail-state-placed" href="#"></a></li>
-							      <li><a id="order-detail-state-canceled" href="#"></a></li>
-							      <li><a id="order-detail-state-paid" href="#"></a></li>
-							      <li><a id="order-detail-state-launching" href="#"></a></li>
-							      <li><a id="order-detail-state-suspended" href="#"></a></li>
-							      <li><a id="order-detail-state-fulfilled" href="#"></a></li>
-							    </ul>
-							</li>
-						</ul>
-					</nav>
+					<div>
+						<nav id="primary_nav_wrap">
+							<ul>
+								<li><a id="order-detail-state" href="#"></a>
+								    <ul>
+								      <li><a id="order-detail-state-placed" href="#"></a></li>
+								      <li><a id="order-detail-state-canceled" href="#"></a></li>
+								      <li><a id="order-detail-state-paid" href="#"></a></li>
+								      <li><a id="order-detail-state-launching" href="#"></a></li>
+								      <li><a id="order-detail-state-suspended" href="#"></a></li>
+								      <li><a id="order-detail-state-fulfilled" href="#"></a></li>
+								    </ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
 					<div>
 						<span>Дата добавления: </span><span id="order-detail-placedDate"></span>
 					</div>
@@ -54,13 +56,13 @@
 				<hr>
 				<div class="form-group">
 					<label for="order-edit-deadlineDate">Устанавливаемая администратором дата выполнения</label>
-					<input class="form-control" type="date" id="order-edit-deadlineDate" name="order-edit-deadlineDate" class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+					<input class="form-control" id="order-edit-deadlineDate" name="order-edit-deadlineDate" class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-paidDate">Дата оплаты</label>
-					<input class="form-control" type="date" id="order-edit-paidDate" name="order-edit-paidDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+					<input class="form-control" id="order-edit-paidDate" name="order-edit-paidDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-launchStartDate">Дата начала выполнения</label>
-					<input class="form-control" type="date" id="order-edit-launchStartDate" name="order-edit-launchStartDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+					<input class="form-control" id="order-edit-launchStartDate" name="order-edit-launchStartDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 					<label for="order-edit-fulfilledDate">Дата завершения</label>
-					<input class="form-control" type="date" id="order-edit-fulfilledDate" name="order-edit-fulfilledDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+					<input class="form-control" id="order-edit-fulfilledDate" name="order-edit-fulfilledDate"  class="datepicker" data-provide="datepicker" data-date-format="dd-mm-yyyy">
 				</div>
 				<input type="hidden" value="" id="order-id">
 				<button id="submitEditedOrder" type="submit">Сохранить</button>
@@ -72,11 +74,17 @@
 	app.handler(function() {
 
 		var $container = $(this).find("#page-container");
-		
+		//Заполнение выпадающего списка вариантами статуса заказа на русском
 		var statusKeysCount = 0;
 		$("#primary_nav_wrap > ul > li > ul > li").each( function(index, element){
 		    //console.log( $( this ).text() );
-		    $(this).text(orderStatus[orderStatusKeys[statusKeysCount]]);
+		    var currentStatusItemText =
+		    	orderStatus[orderStatusKeys[statusKeysCount]];
+		    $(this).text(currentStatusItemText);
+		    $(this).click(function(event){
+		    	
+		    	$('#order-detail-state').text(currentStatusItemText);
+		    });
 		    statusKeysCount++;
 		});
 
@@ -140,13 +148,13 @@
 										  	$('#order-detail-username').text(responseText.username);
 										  	$('#order-detail-email').text(responseText.email);
 										  	$('#order-detail-task').text(responseText.task);
-										  	$('#order-detail-state').text(responseText.state);
+										  	$('#order-detail-state').text(orderStatus[responseText.state]);
 										  	$('#order-detail-placedDate').text(responseText.placedDate);
 										  	$('#order-detail-desiredDeadlineDate').text(responseText.desiredDeadlineDate);
-										  	$('#order-edit-deadlineDate').text(responseText.deadlineDate);
-										  	$('#order-edit-paidDate').text(responseText.paidDate);
-										  	$('#order-edit-launchStartDate').text(responseText.launchStartDate);
-										  	$('#order-edit-fulfilledDate').text(responseText.fulfilledDate);
+										  	$('#order-edit-deadlineDate').val(responseText.deadlineDate);
+										  	$('#order-edit-paidDate').val(responseText.paidDate);
+										  	$('#order-edit-launchStartDate').val(responseText.launchStartDate);
+										  	$('#order-edit-fulfilledDate').val(responseText.fulfilledDate);
 
 										  	$('form').fadeIn(600);
 									  } else {
@@ -169,13 +177,20 @@
 								//
 								event.preventDefault();
 								//
-								//console.log($('#order-edit-deadlineDate'));
-								//console.log($('#order-edit-deadlineDate').text());
+								var stateParam;
+								
+								for( var key in orderStatusKeys) {
+						             if( orderStatus[key] === $('#order-detail-state').text() ){
+						            	 stateParam = key;
+						             }
+							    }
 								
 								$.ajax({
 									type: 'POST',
 									url: '/admin?action=edit-order-data&id='
 									+ $('#order-id').val()
+									+ '&state='
+									+ stateParam
 									+ '&deadlineDate='
 									+ $('#order-edit-deadlineDate').val()
 									+ '&paidDate='

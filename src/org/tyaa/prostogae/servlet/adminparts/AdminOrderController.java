@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.tyaa.prostogae.dao.OrderDAO;
 import org.tyaa.prostogae.entity.OrderData;
+import org.tyaa.prostogae.entity.OrderStatus;
 import org.tyaa.prostogae.entity.OrdersData;
 import org.tyaa.prostogae.entity.PageData;
 
@@ -134,6 +135,7 @@ public class AdminOrderController {
 			OrderData order = orderDAO.getOrder(id);
         	if(order != null){
         		
+        		order.setState(OrderStatus.valueOf(_req.getParameter("state")));
         		order.setDeadlineDate(_req.getParameter("deadlineDate"));
         		order.setPaidDate(_req.getParameter("paidDate"));
         		order.setLaunchStartDate(_req.getParameter("launchStartDate"));

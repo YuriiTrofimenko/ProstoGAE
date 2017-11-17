@@ -9,12 +9,12 @@ $(document).ready(function() {
 		   $.getScript("js/jquery/jquery-hashchange.js", function(){
 				
 			   console.log("jquery-hashchange loaded");
-			   $.getScript("js/app.js", function(){
+			   $.getScript("js/custom.js", function(){
 					
-				   console.log("app loaded");
-				   $.getScript("js/custom.js", function(){
+				   console.log("custom loaded");
+				   $.getScript("js/app.js", function(){
 						
-					   console.log("custom loaded");
+					   console.log("app loaded");
 					
 					});
 				});
